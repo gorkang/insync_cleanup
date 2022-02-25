@@ -1,0 +1,42 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# insync_cleanup
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of insync_cleanup is to find and remove files and folders duplicated by insync that have an exact copy inside the same subfolder. It uses file checksums to compare files with similar names in the same folders. It also renames files and folders with an extra ` (2)` bit when there is no canonical copy of the file.
+
+This code has been created for my personal use (tested on Ubuntu 20.04 only). **If you run it it will likely crash or delete all your files**.  
+
+To use it, first you need to edit the `folder`, `destination` and `test_run` variables on `_targets_folders.R` or `_targets_files.R`.
+
+For example, if you want to check for duplicates only in folder names, you will edit `_targets_folders.R`, and then go to `run.R` and run the relevant section. 
+
+
+```{r eval=FALSE, include=TRUE}
+Sys.setenv(TAR_PROJECT = "folders")
+targets::tar_destroy(ask = FALSE)
+targets::tar_make()
+```
+
+It is highly recommended to use `test_run = TRUE` to check what will happen before doing any changes. 
+
+After running the above chunk of code, you can see the proposed changes with:
+
+```{r eval=FALSE, include=TRUE}
+targets::tar_load(c(DT_safely_rename, DF_all_folders_processed))
+DT_safely_rename
+DF_all_folders_processed$DT_delete
+```

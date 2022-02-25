@@ -1,4 +1,8 @@
 # Folders ------------------------------------------------------------------
+
+# GO TO: rstudioapi::navigateToFile("_targets_folders.R")
+# CHANGE folder, destination and test_run
+
 Sys.setenv(TAR_PROJECT = "folders")
 targets::tar_destroy(ask = FALSE)
 targets::tar_make()
@@ -10,6 +14,10 @@ targets::tar_make()
 
 
 # Files --------------------------------------------------------------------
+
+# GO TO: rstudioapi::navigateToFile("_targets_files.R")
+# CHANGE folder, destination and test_run
+
 Sys.setenv(TAR_PROJECT = "files") 
 targets::tar_destroy(ask = FALSE)
 targets::tar_make()
@@ -19,6 +27,8 @@ targets::tar_make()
 # DF_all_folders_processed$DT_all
 
 
-# Visualize targets tree
+
+# Visualize targets -------------------------------------------------------
+
 targets::tar_visnetwork(targets_only = TRUE, label = "time")
 

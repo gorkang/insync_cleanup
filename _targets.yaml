@@ -1,0 +1,6 @@
+files:
+  script: _targets_files.R
+store: _targets/files
+folders:
+  script: _targets_folders.R
+  store: _targets/folders

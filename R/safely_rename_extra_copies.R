@@ -1,4 +1,4 @@
-safely_rename_extra_copies <- function(folder, test_run = TRUE) {
+safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
   
   ALL_FILES = list.files(path = folder, full.names = TRUE, recursive = TRUE, all.files = TRUE, include.dirs = TRUE, pattern = " \\([2-9]\\)")
   # SLOWER: ALL_FILES2 = system2(command = 'find', args = c(folder, '-type f', '-regex ".* ([2-9]).*"'), stdout = TRUE)

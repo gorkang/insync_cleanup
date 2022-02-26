@@ -2,7 +2,8 @@ process_duplicate_folders <- function(DF_all, folder, destination = "~/Downloads
   
   # DEBUG
   # jsPsychR::debug_function("process_duplicate_folders")
-
+# targets::tar_load_globals()
+  
   cli::cli_alert_info("\nChecking duplicate folders. it will take a while... [ESC to abort]\n\n")
   
   DF_all <- lazy_dt(DF_all) # USE dtplyr to do this step with data.table. From 16 to 5 seconds
@@ -170,26 +171,23 @@ process_duplicate_folders <- function(DF_all, folder, destination = "~/Downloads
         DF_final %>% bind_rows() %>% 
         select(ID_folder, full_folder, CANONICAL) %>% 
         distinct(full_folder, .keep_all = TRUE) %>%
-        filter(CANONICAL %in% c("CANONICAL", "CANONICAL_EMPTY"))
+        filter(CANONICAL %in% c("CANONICAL", "CANONICAL_EMPTY")) %>% 
+        mutate(DESTINATION = gsub(destination, paste0(destination, "/CANONICAL/"), gsub(folder, destination, full_folder)))
       
       DF_TO_DELETE =
         DF_final %>% bind_rows() %>% 
         select(ID_folder, full_folder, CANONICAL) %>% distinct(full_folder, .keep_all = TRUE) %>%
         filter(CANONICAL %in% c("NOPE", "NOPE_EMPTY")) %>% 
-        mutate(
-          # DELETE_name_terminal = gsub(" ", "\\\\ ", full_filename) %>% gsub("\\(", "\\\\(", .) %>% gsub("\\)", "\\\\)", .), # If need to do something via terminal
-          DESTINATION = gsub(folder, destination, full_folder)
-          )
-      
+        mutate(DESTINATION = gsub(destination, paste0(destination, "/DUPLICATES/"), gsub(folder, destination, full_folder)))
+        #   # DELETE_name_terminal = gsub(" ", "\\\\ ", full_filename) %>% gsub("\\(", "\\\\(", .) %>% gsub("\\)", "\\\\)", .), # If need to do something via terminal
+
       # No single candidate with all files
       DF_MAYBES =
         DF_final %>% bind_rows() %>% 
         select(ID_folder, full_folder, CANONICAL) %>% 
         distinct(full_folder, .keep_all = TRUE) %>%
         filter(CANONICAL %in% c("MAYBE", "MAYBE_NOT"))
-      
   
-      
       DF_ALL = DF_CANONICALS %>% right_join(DF_TO_DELETE, by = "ID_folder")
       
       

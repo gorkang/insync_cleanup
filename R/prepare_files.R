@@ -2,10 +2,8 @@ prepare_files <- function(input_files) {
   
   cli::cli_alert_info("\nChecking {format(as.numeric(length(input_files)), big.mark = ',')} files and folders. it will take a while... [ESC to abort]\n\n")
   
-  now_str = Sys.time()
-  
   DF_all = input_files %>% as_tibble() %>%
-    mutate(date = now_str,
+    mutate(date = file.info(value)$mtime,
            size = file.size(value),
            is_folder = file_test("-d", value)) %>% 
     mutate(filename = 

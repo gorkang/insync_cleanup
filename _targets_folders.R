@@ -2,6 +2,7 @@
 # Parameters --------------------------------------------------------------
 
   folder = "/home/emrys/gorkang@gmail.com"
+  # folder = "/home/rut/rutcorreia@gmail.com/"
   destination = "~/Downloads/INSYNC/FOLDERS"
   test_run = TRUE
 
@@ -50,7 +51,11 @@ targets <- list(
   # Folders
   tar_target(DF_all_folders_processed, process_duplicate_folders(DF_all = DF_all, folder = folder, destination = destination)),
   tar_target(log_folders, store_log(DF_all_folders_processed, files_folders = "folders", test_run = test_run)),
-  tar_target(DF_folders_moved, move_duplicate_folders(DF_all_folders_processed, destination = destination, test_run = test_run))
+  tar_target(DF_folders_moved, move_duplicate_folders(DF_all_folders_processed, destination = destination, test_run = test_run)),
+  
+  # If folder or file (2) is the canonical and file is deleted, rename file (2) -> file to avoid issues with other computers (where file would be the canonical)
+  tar_target(DT_safely_rename2, safely_rename_extra_copies(folder = folder, test_run = test_run, after = DF_folders_moved), priority = 1)
+  
 
 )
 

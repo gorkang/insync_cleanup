@@ -95,18 +95,19 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
       
       DF_CANONICALS =
         DF_final %>% bind_rows() %>% 
-        select(full_filename, ID_file, CANONICAL) %>% distinct(full_filename, .keep_all = TRUE) %>%
-        filter(CANONICAL == "CANONICAL")
+        select(full_filename, ID_file, date, size, CANONICAL) %>% distinct(full_filename, .keep_all = TRUE) %>%
+        filter(CANONICAL == "CANONICAL") %>% 
+        mutate(DESTINATION = gsub(destination, paste0(destination, "/CANONICAL/"), gsub(folder, destination, full_filename)))
   
       DF_TO_DELETE =
         DF_final %>% bind_rows() %>% 
-        select(full_filename, ID_file, CANONICAL) %>% distinct(full_filename, .keep_all = TRUE) %>%
+        select(full_filename, ID_file, date, size, CANONICAL) %>% distinct(full_filename, .keep_all = TRUE) %>%
         filter(CANONICAL != "CANONICAL") %>% 
-        mutate(
-            # DELETE_name_terminal = gsub(" ", "\\\\ ", full_filename) %>% gsub("\\(", "\\\\(", .) %>% gsub("\\)", "\\\\)", .), # If need to do something via terminal
-              DESTINATION = gsub(folder, destination, full_filename)
-               )
+        mutate(DESTINATION = gsub(destination, paste0(destination, "/DUPLICATES/"), gsub(folder, destination, full_filename)))
+      # DELETE_name_terminal = gsub(" ", "\\\\ ", full_filename) %>% gsub("\\(", "\\\\(", .) %>% gsub("\\)", "\\\\)", .), # If need to do something via terminal
+      
   
+      DF_ALL = DF_CANONICALS %>% right_join(DF_TO_DELETE, by = "ID_file")
       
           
       # Final DFs ---------------------------------------------------------------
@@ -114,11 +115,14 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
       # ADD CHECK. Each element of list should have at least two rows
     
       DT_delete = DT::datatable(DF_TO_DELETE %>% mutate(filename = basename(full_filename)) %>%  select(filename, full_filename, ID_file, DESTINATION))
+      DT_all = DT::datatable(DF_ALL)
+      
   
       DF_all_files_processed = 
         list(DF_CANONICALS = DF_CANONICALS,
              DF_TO_DELETE = DF_TO_DELETE,
-             DT_delete = DT_delete)
+             DT_delete = DT_delete,
+             DT_all = DT_all)
       
     }
     

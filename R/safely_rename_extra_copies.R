@@ -8,22 +8,38 @@ safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
     mutate(REPLACEMENT = gsub("(.?) \\([0-9]\\)(\\.?)", "\\1\\2", value),
            REPLACEMENT_CONFLICT = file.exists(REPLACEMENT)) %>% 
     filter(REPLACEMENT_CONFLICT == FALSE)
+  
+  # Check if we have more coincidences in the replacement names!
+  REPEATED_REPLACEMENTS = DF %>% count(REPLACEMENT) %>% filter(n > 1)
    
-  if (nrow(DF) == 0) {
+  if (nrow(REPEATED_REPLACEMENTS) > 0) {
+    # DT::datatable(DF %>% filter(REPLACEMENT %in% REPEATED_REPLACEMENTS$REPLACEMENT))
+    DF_all = DF %>% mutate(REPLACEMENT_CONFLICT = 
+                    case_when(
+                      REPLACEMENT %in% REPEATED_REPLACEMENTS$REPLACEMENT ~ "overlap in REPLACEMENT",
+                      TRUE ~ NA_character_)) %>% 
+      select(value, REPLACEMENT, REPLACEMENT_CONFLICT)
+    cli::cli_alert_danger("Some of the replacements are equal!")  
+    
+  }
+  
+  if (nrow(DF_all) == 0) {
     
     cli::cli_alert_success("No files or folders to rename!")
     
   } else {
     
-    cli::cli_h1("We can safely rename {nrow(DF)} files and folders")
+    DF_to_rename = DF_all %>% filter(is.na(REPLACEMENT_CONFLICT))
+    
+    cli::cli_h1("We can safely rename {nrow(DF_to_rename)} files and folders")
     if (test_run == FALSE) {
-      file.rename(from = DF$value, to = DF$REPLACEMENT)
-      cli::cli_alert_success("{nrow(DF)} files and folders renamed")  
+      file.rename(from = DF_to_rename$value, to = DF_to_rename$REPLACEMENT)
+      cli::cli_alert_success("{nrow(DF_to_rename)} files and folders renamed")  
     } else {
       cli::cli_alert_info("THIS WAS A TEST RUN, so nothing was actually done! :)")  
     }
     
-    DT::datatable(DF)
+    DT::datatable(DF_all)
     
   }
   

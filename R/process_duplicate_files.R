@@ -14,6 +14,7 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
     
     cli::cli_alert_success(paste0("No duplicates found! ", praise::praise()))
     DF_all_files_processed = NULL
+    DF_duplicate_files = NULL
     
   } else {
     
@@ -30,7 +31,7 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
     # Split by full_folder so we only compare duplicated files in the same folder!!!
     DF_folders_split1 = split(DF_duplicate_files, DF_duplicate_files$full_folder) 
     
-    # Inside each folder, split by file and flatten to get a single list
+    # Inside each folder, split by clean_filename and flatten to get a single list
     DF_folders_split2 = 1:length(DF_folders_split1) %>% 
       map(~ split(DF_folders_split1[[.x]], DF_folders_split1[[.x]]$clean_filename)) %>% 
       flatten()
@@ -121,6 +122,7 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
       DF_all_files_processed = 
         list(DF_CANONICALS = DF_CANONICALS,
              DF_TO_DELETE = DF_TO_DELETE,
+             DF_duplicate_files = DF_duplicate_files,
              DT_delete = DT_delete,
              DT_all = DT_all)
       

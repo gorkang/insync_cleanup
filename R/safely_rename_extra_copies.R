@@ -1,3 +1,4 @@
+# RENAMES ONLY files that have the (2) when there is no CANONICAL file in the same location
 safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
   
   ALL_FILES = list.files(path = folder, full.names = TRUE, recursive = TRUE, all.files = TRUE, include.dirs = TRUE, pattern = " \\([2-9]\\)")
@@ -14,7 +15,7 @@ safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
    
   if (nrow(REPEATED_REPLACEMENTS) > 0) {
     # DT::datatable(DF %>% filter(REPLACEMENT %in% REPEATED_REPLACEMENTS$REPLACEMENT))
-    DF_all = DF %>% mutate(REPLACEMENT_CONFLICT = 
+    DF = DF %>% mutate(REPLACEMENT_CONFLICT = 
                     case_when(
                       REPLACEMENT %in% REPEATED_REPLACEMENTS$REPLACEMENT ~ "overlap in REPLACEMENT",
                       TRUE ~ NA_character_)) %>% 
@@ -23,13 +24,13 @@ safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
     
   }
   
-  if (nrow(DF_all) == 0) {
+  if (nrow(DF) == 0) {
     
     cli::cli_alert_success("No files or folders to rename!")
     
   } else {
     
-    DF_to_rename = DF_all %>% filter(is.na(REPLACEMENT_CONFLICT))
+    DF_to_rename = DF %>% filter(is.na(REPLACEMENT_CONFLICT))
     
     cli::cli_h1("We can safely rename {nrow(DF_to_rename)} files and folders")
     if (test_run == FALSE) {
@@ -39,7 +40,7 @@ safely_rename_extra_copies <- function(folder, test_run = TRUE, after) {
       cli::cli_alert_info("THIS WAS A TEST RUN, so nothing was actually done! :)")  
     }
     
-    DT::datatable(DF_all)
+    DT::datatable(DF)
     
   }
   

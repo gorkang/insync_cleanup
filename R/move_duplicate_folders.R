@@ -3,7 +3,7 @@ move_duplicate_folders <- function(DF_all_folders_processed, destination = "~/Do
   if (!dir.exists(destination)) dir.create(destination, recursive = TRUE)
   
   DF_TO_DELETE = DF_all_folders_processed$DF_TO_DELETE
-  DF_CANONICAL = DF_all_folders_processed$DF_CANONICAL
+  DF_CANONICALS = DF_all_folders_processed$DF_CANONICAL
   
   if (is.null(DF_TO_DELETE)) {
     
@@ -18,8 +18,10 @@ move_duplicate_folders <- function(DF_all_folders_processed, destination = "~/Do
     
     if (test_run == TRUE) cli::cli_alert_info("TEST RUN: nothing will be done")
     # cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated folders to `{destination}`")
-    cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
-    cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
+    # cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
+    # cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
+    cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `{paste0(destination, /DUPLICATES/)}`")
+    cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `{paste0(destination, /DUPLICATES/)}`")
     
     
     1:nrow(DF_TO_DELETE) %>% 

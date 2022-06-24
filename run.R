@@ -4,10 +4,10 @@
 Sys.setenv(TAR_PROJECT = "folders")
 targets::tar_load_globals()
 
-DELETE = compare_hashes(NEW_PATH = "/home/emrys/Downloads/INSYNC_Rut/ROOT_files",
-                        OLD_PATH = "/home/rut/rutcorreia@gmail.com_CS/",
-                        label = "rut_ROOT")
-# file.remove(DELETE_FILES$value)  
+DELETE = compare_hashes(NEW_PATH = "/home/rut/rutcorreia@gmail.com/TRANSFERENCIA-cuentaUDP/",
+                        OLD_PATH = "/home/rut/rutcorreia@gmail.com/TRANSFERENCIA_2",
+                        label = "rut_UDP")
+# file.remove(DELETE$value)
 
 Sys.setenv(TAR_PROJECT = "folders")
 FOLDER = "/home/emrys/Downloads/INSYNC/FOLDERS_RENAME"

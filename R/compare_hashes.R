@@ -1,3 +1,15 @@
+#' compare_hashes
+#' the function will compare two folders and give a list of files in the 
+#' ^OLD_PATH that can safely be deleted (have an exact replica in NEW_PATH)
+#'
+#' @param NEW_PATH 
+#' @param OLD_PATH path for files that can probably be deleted
+#' @param label 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 compare_hashes <- function(NEW_PATH, OLD_PATH, label = "") {
   
   # TODO: 

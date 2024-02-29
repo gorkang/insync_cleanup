@@ -1,11 +1,11 @@
 
 # Parameters --------------------------------------------------------------
 
-  # folder = "/home/emrys/gorkang@gmail.com"
-  # destination = "~/Downloads/INSYNC/FILES"
+  folder = "/home/emrys/gorkang@gmail.com"
+  destination = "~/Downloads/INSYNC/FILES"
   
-  folder = "/home/rut/rutcorreia@gmail.com/"
-  destination = "~/Downloads/INSYNC_Rut/FILES"
+  # folder = "/home/rut/rutcorreia@gmail.com/"
+  # destination = "~/Downloads/INSYNC_Rut/FILES"
   test_run = TRUE
 
 
@@ -29,7 +29,7 @@
   data_preparation_packages = c("data.table", "dplyr", "dtplyr", "forcats", "here", "janitor", "purrr", "readr", "stringr", "tibble", "tidyr")
   data_visualization_packages = c("DT", "ggalluvial", "ggridges")
   non_declared_dependencies = c("qs", "visNetwork", "webshot", "performance", "shinyWidgets", "R.utils")
-  extra_packages = c("shrtcts")
+  extra_packages = c() #"shrtcts"
   packages_to_load = c(main_packages, data_preparation_packages, data_visualization_packages, non_declared_dependencies, extra_packages)
   
   # target options (packages, errors...)

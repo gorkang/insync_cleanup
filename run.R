@@ -1,3 +1,26 @@
+# 1) Get all changes in the last 24h  (-mtime -1: last 1 day) (-mmin -30: last 30 minutes)
+tictoc::tic()
+ALL_changes = tibble::tibble(filename = system("find /home/emrys/gorkang@gmail.com/* -mtime -1", intern = TRUE)) 
+DF = ALL_changes |> dplyr::rowwise() |> dplyr::mutate(HASH = secretbase::sha3(filename))
+tictoc::toc()
+
+
+# 2) Hash those files and compare to previous hash
+# ....
+
+# 3) Get all files
+tictoc::tic()
+# ALL_files_t0 = tibble::tibble(file = system("find /home/emrys/gorkang@gmail.com/*", intern = TRUE)) |> dtplyr::lazy_dt()
+# ALL_files_t1 = tibble::tibble(file = system("find /home/emrys/gorkang@gmail.com/*", intern = TRUE)) |> dtplyr::lazy_dt()
+ALL_files_t0 |> anti_join(ALL_files_t1, by = "file")
+tictoc::toc()
+
+# 4) Compare to previous snapshot and show files deleted
+
+
+
+
+
 
 # COMPARE FILES IN FOLDERS BY HASH ----------------------------------------
 

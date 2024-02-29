@@ -20,8 +20,8 @@ move_duplicate_folders <- function(DF_all_folders_processed, destination = "~/Do
     # cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated folders to `{destination}`")
     # cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
     # cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `paste0({destination}, /DUPLICATES/)`")
-    cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `{paste0(destination, /DUPLICATES/)}`")
-    cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `{paste0(destination, /DUPLICATES/)}`")
+    cli::cli_h1("\nMOVE {nrow(DF_TO_DELETE)} duplicated files to `{paste0(destination)}/DUPLICATES/`")
+    cli::cli_h1("\nMOVE {nrow(DF_CANONICALS)} duplicated files to `{paste0(destination)}/DUPLICATES/`")
     
     
     1:nrow(DF_TO_DELETE) %>% 

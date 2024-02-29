@@ -27,8 +27,12 @@ process_duplicate_folders <- function(DF_all, folder, destination = "~/Downloads
     DF_duplicate_files_temp = 
       DF_all %>% 
       filter(ID_folder %in% duplicate_folders & is_folder == FALSE) %>% 
-      mutate(HASH = tools::md5sum(full_filename),
-             ID = paste0(HASH, "_", ID_file)) # We need an UNIQUE ID. Even if the file is in another folder,
+      dplyr::as_tibble() |> 
+      dplyr::rowwise() |> 
+      mutate(
+        # HASH = tools::md5sum(full_filename),
+        HASH = secretbase::sha3(full_filename),
+        ID = paste0(HASH, "_", ID_file)) # We need an UNIQUE ID. Even if the file is in another folder,
     
     DF_duplicate_folders_temp = 
       DF_all %>% 

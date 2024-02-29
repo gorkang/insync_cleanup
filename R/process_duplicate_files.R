@@ -22,8 +22,13 @@ process_duplicate_files <- function(DF_all, folder, destination = "~/Downloads/I
     
     DF_duplicate_files = DF_all %>% 
       filter(ID_file %in% duplicate_files) %>% 
-      mutate(HASH = tools::md5sum(full_filename),
-             ID = paste0(HASH, "_", ID_file)) %>%  # We need an UNIQUE ID. Even if the file is in another folder,
+      dplyr::as_tibble() |> 
+      dplyr::rowwise() |> # for secretbase::sha3()
+      mutate(
+        # HASH = tools::md5sum(full_filename),
+        HASH = secretbase::sha3(full_filename),
+        
+        ID = paste0(HASH, "_", ID_file)) %>%  # We need an UNIQUE ID. Even if the file is in another folder,
       as_tibble() # Go back to tibble as data.table fail in the next split
     
     # Split DF by folder and then file

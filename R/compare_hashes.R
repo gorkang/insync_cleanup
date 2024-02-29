@@ -45,11 +45,15 @@ compare_hashes <- function(NEW_PATH, OLD_PATH, label = "") {
 
   cli::cli_alert_info("Hashing {nrow(NEW_FILES)} files in {NEW_PATH}")
   tictoc::tic()
-  NEW_hash = NEW_FILES %>% mutate(HASH = tools::md5sum(value))
+  # NEW_hash = NEW_FILES %>% mutate(HASH = tools::md5sum(value))
+  NEW_hash = NEW_FILES %>% dplyr::rowwise() |> dplyr::mutate(HASH = secretbase::sha3(value))
+  
   data.table::fwrite(NEW_hash, paste0("outputs/compare_hashes_", label ,"_NEW_hashed.csv.gz"))
   
   cli::cli_alert_info("Hashing {nrow(OLD_FILES)} files in {OLD_PATH}")
-  OLD_hash = OLD_FILES %>% mutate(HASH = tools::md5sum(value))
+  # OLD_hash = OLD_FILES %>% mutate(HASH = tools::md5sum(value))
+  OLD_hash = OLD_FILES %>% dplyr::rowwise() |> dplyr::mutate(HASH = secretbase::sha3(value))
+  
   data.table::fwrite(OLD_hash, paste0("outputs/compare_hashes_", label ,"_OLD_hashed.csv.gz"))
   tictoc::toc()
   
